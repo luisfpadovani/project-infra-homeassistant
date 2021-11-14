@@ -1,0 +1,17 @@
+default_config:
+panel_iframe:
+  configurator:
+    title: Painel
+    icon: mdi:wrench
+    url: http://192.168.15.99:3218/
+    require_admin: true
+  nodered:
+    title: Node-Red
+    icon: mdi:shuffle-variant
+    url: http://192.168.15.99:1880/
+    require_admin: true
+mqtt:
+  broker: 192.168.15.99  
+recorder:
+  db_url: mysql://homeassistant:ha#mariadbpadovani@123@192.168.15.99/ha_db?charset=utf8
+  purge_keep_days: 30
