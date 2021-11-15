@@ -1,0 +1,13 @@
+default_config:
+panel_iframe:
+  nodered:
+    title: Node-Red
+    icon: mdi:shuffle-variant
+    url: http://10.5.0.4:1880/
+    require_admin: true
+mqtt:
+  broker: 10.5.0.5
+  
+recorder:
+  db_url: mysql://homeassistant:#ha_dbdatabasepassword@luis@123@10.5.0.3/ha_db?charset=utf8
+  purge_keep_days: 30
