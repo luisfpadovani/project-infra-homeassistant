@@ -1,0 +1,21 @@
+version: '3'
+services:
+  portainer:   
+    container_name: portainer
+    image: portainer/portainer-ce
+    ports:
+      - "9000:9000"
+    networks:
+        rede_docker:
+            ipv4_address: 11.5.0.2  
+    restart: unless-stopped
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./portainer/portainer_data:/data"
+networks:
+  rede_docker: 
+    driver: bridge   
+    ipam:
+     config:
+       - subnet: 11.5.0.0/16
+         gateway: 11.5.0.1
