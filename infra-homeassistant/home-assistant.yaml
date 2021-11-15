@@ -4,7 +4,7 @@ services:
     container_name: homeassistant
     image: homeassistant/home-assistant
     volumes:
-      - ./homeassistant/config
+      - ./homeassistant/config:/config
       - ./etc/localtime:/etc/localtime:ro
     restart: unless-stopped 
     network_mode: host
