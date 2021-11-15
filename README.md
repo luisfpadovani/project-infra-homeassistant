@@ -11,8 +11,8 @@ Docker compose criado com uma infra preparada com algumas imagens para facilitar
 ## Containers Criados
 
 * Home Assistant
-  * IP 10.5.0.2 
-  * Porta 443/8123
+  * IP verificar ao subir, configurado como host.
+  * Porta *
 * NodeRed
   * IP 10.5.0.4 
   * Porta 1880
@@ -60,4 +60,16 @@ recorder:
 
 ## Como subir os containers?
 
-Na raiz do projeto execute **docker-compose up**
+1 - Entre na pasta **infra-gerenciamento-ambiente-portainer** execute o comando **docker-compose up -d** para termos o gerenciador de docker portainer
+
+2 - Salve o arquivo **infra-homeassistant/homeassistant/mosquitto/config/mosquitto.conf** em um diretorio a parte.
+
+3 - De a permissão de full controle na pasta **infra-homeassistant/infra-homeassistant/nodered** (Se for linux executar o comando chmod +777)
+
+3 - Entra na pasta **infra-homeassistant** execute o comando **docker-compose up -d** para termos o gerenciador o nosso ambiente de home assistant
+
+4 - Mova o arquivo salvos no ponto 2 para a sua origem
+
+5- Acesse o portainer via http://11.5.0.2:9000, configure um usuario e senha e de restart nos 2 container **mosquitto** e **nodered**
+
+

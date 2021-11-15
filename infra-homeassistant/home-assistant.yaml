@@ -4,8 +4,8 @@ services:
     container_name: homeassistant
     image: homeassistant/home-assistant
     volumes:
-      - ./home-assistant-config/config
-      - ./etc/localtime:/etc/localtime:ro
+      - ./infra-homeassistant/homeassistant/config
+      - ./infra-homeassistant/etc/localtime:/etc/localtime:ro
     restart: unless-stopped 
     network_mode: host
     depends_on:
@@ -25,12 +25,18 @@ services:
     volumes:
       - ./infra-homeassistant/mariadb/config:/config
     ports:
-      - "3306:3306"    
+      - "3306:3306"
+    networks:
+        rede_docker:
+            ipv4_address: 10.5.0.3        
   nodered:
     container_name: nodered
     image: nodered/node-red:latest
     ports:
-      - "1880:1880"  
+      - "1880:1880" 
+    networks:
+        rede_docker:
+            ipv4_address: 10.5.0.4        
     volumes:
       - ./infra-homeassistant/nodered/data:/data
     depends_on:
@@ -46,7 +52,17 @@ services:
     ports:
       - "1883:1883"
       - "1884:1884"
+    networks:
+        rede_docker:
+            ipv4_address: 10.5.0.5     
     volumes:
       - "./infra-homeassistant/mosquitto/config:/mosquitto/config"
       - "./infra-homeassistant/mosquitto/data:/mosquitto/data"
       - "./infra-homeassistant/mosquitto/log:/mosquitto/log"
+networks:
+  rede_docker: 
+    driver: bridge   
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1      
