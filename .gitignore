@@ -1,2 +1,2 @@
 .env
-home-assistant-config/configuration.yaml
+infra_homeassistant/home-assistant-config/configuration.yaml

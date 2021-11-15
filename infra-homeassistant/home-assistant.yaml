@@ -1,0 +1,52 @@
+version: '3'
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: homeassistant/home-assistant
+    volumes:
+      - ./home-assistant-config/config
+      - ./etc/localtime:/etc/localtime:ro
+    restart: unless-stopped 
+    network_mode: host
+    depends_on:
+      - mariadb
+      - mosquitto
+  mariadb:
+    image: linuxserver/mariadb
+    container_name: mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: ha_db
+      MYSQL_USER: homeassistant
+      MYSQL_PASSWORD: "${HA_MYSQL_PASSWORD}"
+      PUID: "${PUID}"
+      PGID: "${PGID}"
+    volumes:
+      - ./infra-homeassistant/mariadb/config:/config
+    ports:
+      - "3306:3306"    
+  nodered:
+    container_name: nodered
+    image: nodered/node-red:latest
+    ports:
+      - "1880:1880"  
+    volumes:
+      - ./infra-homeassistant/nodered/data:/data
+    depends_on:
+      - homeassistant
+      - mosquitto
+    environment:
+      TZ: "America/Sao_Paulo"
+    restart: unless-stopped
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+      - "1884:1884"
+    volumes:
+      - "./infra-homeassistant/mosquitto/config:/mosquitto/config"
+      - "./infra-homeassistant/mosquitto/data:/mosquitto/data"
+      - "./infra-homeassistant/mosquitto/log:/mosquitto/log"

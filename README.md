@@ -36,8 +36,8 @@ Para a instação é necessário criar dois arquivos:
 COMPOSE_FILE=infra-gerenciamento-ambiente/gerenciador-docker.yaml:infra-homeassistant/home-assistant.yaml
 MYSQL_ROOT_PASSWORD=<suasenha1aqui>
 HA_MYSQL_PASSWORD=<suasenha2aqui>
-PUID=0
-PGID=0
+PUID=10000
+PGID=10000
 ```
 
 **configuration.yaml** no diretorio **home-assistant-config**
@@ -56,6 +56,7 @@ recorder:
   db_url: mysql://homeassistant:<suasenha2aqui>@10.5.0.3/ha_db?charset=utf8
   purge_keep_days: 30
 ```
+
 
 ## Como subir os containers?
 
