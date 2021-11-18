@@ -70,8 +70,8 @@ tts:
   - platform: google_translate
 #CONFIGURACAO REDE
 http:
-  server_port: 8123
-  server_host: # Server Host
+  server_port: 8443
+  server_host: 0.0.0.0
   ip_ban_enabled: true
   login_attempts_threshold: 3
   use_x_forwarded_for: true
@@ -84,7 +84,7 @@ duckdns:
   access_token: tokendns
 homeassistant:
   internal_url: "http://<iphost>:8123"
-  external_url: "https://dominioduckdns.duckdns.org"  
+  external_url: "https://dominioduckdns.duckdns.org:8443"  
 
 #PAINEL LATERAL
 panel_iframe:
