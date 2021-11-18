@@ -4,26 +4,47 @@ services:
     container_name: homeassistant
     image: homeassistant/home-assistant
     volumes:
-      - ./homeassistant/config:/config
-      - ./etc/localtime:/etc/localtime:ro
+      - ${DIRETORIO_CONFIG_HOMEASSISTANT}:/config
+      - ${DIRETORIO_CONFIG_TIME}:/etc/localtime:ro
+      - ${DIRETORIO_CERTIFICADO_HOMEASSISTANT}:/tmp
     restart: unless-stopped 
     network_mode: host
     depends_on:
       - mariadb
       - mosquitto
+  swag:
+    image: ghcr.io/linuxserver/swag
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID="${PUID}"
+      - PGID="${PGID}"
+      - TZ="${ZONA_PAIS}"
+      - URL="${URL_DUCKDNS}"
+      - VALIDATION=duckdns
+      - DUCKDNSTOKEN=${TOKEN_DUCKDNS}
+      - EMAIL=${EMAIL_SWAG}
+      - SUBDOMAINS=wildcard
+    volumes:
+      - ${DIRETORIO_CONFIG_SWAG}:/config 
+      - ${DIRETORIO_CONFIG_TIME}:/etc/localtime:ro
+    ports:
+      - 80:80
+    restart: unless-stopped      
   mariadb:
     image: linuxserver/mariadb
     container_name: mariadb
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
-      MYSQL_DATABASE: ha_db
-      MYSQL_USER: homeassistant
+      MYSQL_DATABASE: homeassistant_db
+      MYSQL_USER: user_db_homeassistant
       MYSQL_PASSWORD: "${HA_MYSQL_PASSWORD}"
       PUID: "${PUID}"
       PGID: "${PGID}"
     volumes:
-      - ./mariadb/config:/config
+      - ${DIRETORIO_CONFIG_MARIADB}:/config
     ports:
       - "3306:3306"
     networks:
@@ -38,12 +59,12 @@ services:
         rede_docker:
             ipv4_address: 10.5.0.4        
     volumes:
-      - ./nodered/data:/data
+      - ${DIRETORIO_DATA_NODERED}:/data
     depends_on:
       - homeassistant
       - mosquitto
     environment:
-      TZ: "America/Sao_Paulo"
+      TZ: "${ZONA_PAIS}"
     restart: unless-stopped
   mosquitto:
     image: eclipse-mosquitto
@@ -56,9 +77,9 @@ services:
         rede_docker:
             ipv4_address: 10.5.0.5     
     volumes:
-      - "./mosquitto/config:/mosquitto/config"      
-      - "./mosquitto/data:/mosquitto/data"
-      - "./mosquitto/log:/mosquitto/log"
+      - ${DIRETORIO_CONFIG_MOSQUITTO}:/mosquitto/config      
+      - ${DIRETORIO_DATA_MOSQUITTO}:/mosquitto/data
+      - ${DIRETORIO_LOG_MOSQUITTO}:/mosquitto/log
 networks:
   rede_docker: 
     driver: bridge   
