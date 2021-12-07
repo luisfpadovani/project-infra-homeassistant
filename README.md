@@ -1,4 +1,4 @@
-aḉl# infra-homeassistant
+##  infra-homeassistant
 Docker compose criado com uma infra preparada com algumas imagens para facilitar na tarefa de automação da sua residência.
 HomeAssistant com suporte ao Supervisor
 
